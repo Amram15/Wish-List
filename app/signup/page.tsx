@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { Button } from "@mui/material";
-import { toast } from 'react-hot-toast';
+// import { toast } from 'react-hot-toast';
 import React, { useEffect } from "react";
 
 export default function SignupPage() {
@@ -41,26 +41,26 @@ export default function SignupPage() {
     }
 
     //signup logic
-    try {
+  //   try {
 
-      toast.success("Signup successful!");
-    } catch (error:any){
-      toast.error(error.message);
-    }
+  //     toast.success("Signup successful!");
+  //   } catch (error:any){
+  //     toast.error(error.message);
+  //   }
     
-    // If signup is successful, reset the form fields
-    try {
-      setLoading(true);
-      setUser({
-        email: "",
-        password: "",
-        username: "",
-      });
-    } catch (error:any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+  //   // If signup is successful, reset the form fields
+  //   try {
+  //     setLoading(true);
+  //     setUser({
+  //       email: "",
+  //       password: "",
+  //       username: "",
+  //     });
+  //   } catch (error:any) {
+  //     toast.error(error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
 
   }
   
