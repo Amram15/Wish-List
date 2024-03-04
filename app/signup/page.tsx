@@ -1,130 +1,90 @@
-'use client';
-import Image from "next/image";
-import styles from "./page.module.css";
-import { Button } from "@mui/material";
-// import { toast } from 'react-hot-toast';
-import React, { useEffect } from "react";
+'use client';import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { auth } from '../firebase';
 
-export default function SignupPage() {
+export default function Signup() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [error, setError] = useState('');
 
- 
-
-    
-  const [user, setUser] = React.useState({
-    email: "",
-    password: "",
-    username: "",
-  })
-
-  const [buttonDisabled, setButtonDisabled] = React.
-  useState(false);
-
-  const [loading, setLoading] = React.useState(false);
-
-  const [error, setError] = React.useState("");
-
-  const onSignup = async () => {
-    // try{
-    //   setLoading(true);
-
-    // } catch (error:any) {
-    //   toast.error(error.message);
-
-    // } finally {
-    //   setLoading(false);
-
-    // }
-
-    if(!user.email || !user.password || !user.username) {
-      setError("Please fill in all fields.");
-      return;
+  const signup = async () => {
+    try {
+      setError('');
+      if (password !== passwordConfirm) {
+        throw new Error("Passwords don't match");
+      }
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      setError(error.message);
     }
-
-    //signup logic
-  //   try {
-
-  //     toast.success("Signup successful!");
-  //   } catch (error:any){
-  //     toast.error(error.message);
-  //   }
-    
-  //   // If signup is successful, reset the form fields
-  //   try {
-  //     setLoading(true);
-  //     setUser({
-  //       email: "",
-  //       password: "",
-  //       username: "",
-  //     });
-  //   } catch (error:any) {
-  //     toast.error(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-
-  }
+  };
   
-
-  useEffect(() => {
-    if(user.email.length > 0 && user.password.length > 0 && user.username.length > 0){
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-
-  }, [user])
-  
-
   return (
-    <div className="flex flex-col items-center
-    justify-center min-h-screen py-2">
-        <h1>Wish-List<hr/></h1>
-        <hr />
-        <label htmlFor="username">Username</label>
-        <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-          id="username"
-          type="text"
-          value={user.username}
-          onChange={(e) => setUser({...user, username: e.
-          target.value})}
-          placeholder="username"
-        />
-      <label htmlFor="email">Email</label>
-      <input         
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-        id="email"
-        type="text"
-        value={user.email}
-        onChange={(e) => setUser({...user, email: e.
-        target.value})}
-        placeholder="email"
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-4 text-center text-indigo-600">Sign up for an Account</h2>
+        <form className="space-y-4">
+          <div className="flex flex-col mb-4">
+            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="border-b border-gray-300 focus:outline-none py-2"
+              placeholder="Enter your email address"
+            />
+          </div>
 
-      />
-      <label htmlFor="password">Password</label>
-      <input
-       className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-       id="password"
-       type="text"
-       value={user.password}
-       onChange={(e) => setUser({...user, password: e.
-       target.value})}
-       placeholder="password"
-      />
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="block w-full border-b border-gray-300 focus:outline-none rounded-none shadow-none py-2"
+              placeholder="Enter your password"
+            />
+          </div>
 
-      <button
-      onClick={onSignup}
-      className="p-2 border border-gray-300 rounded-lg mb4 
-      focus:outline-none focus:border-gray-600">Signup</button>
-      
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
+            <input
+              id="passwordConfirm"
+              name="passwordConfirm"
+              type="password"
+              autoComplete="current-password"
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              required
+              className="block w-full border-b border-gray-300 focus:outline-none rounded-none shadow-none py-2"
+              placeholder="Confirm your password"
+            />
+          </div>
 
-      <hr/><hr/><hr/>
-      <h2>Already have an acconut?</h2>
-      {/* <Link href="/login"
-        className="p-2 border border-gray-300 rounded-lg mb4 
-        focus:outline-none focus:border-gray-600">Login</Link> */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
+          <button
+            disabled={(!email || !password || !passwordConfirm) || (password !== passwordConfirm)}
+            onClick={signup}
+            className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md text-white font-semibold"
+          >
+            Sign Up
+          </button>
+        </form>
+      </div>
     </div>
-  )
+
+  );
 }
