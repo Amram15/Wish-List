@@ -19,6 +19,7 @@
 //   );
 // }
 
+import React from "react";
 import SessionProvider from "./SessionProvider";
 import './globals.css'
 
