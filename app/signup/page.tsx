@@ -76,6 +76,7 @@ export default function Signup() {
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
+            id="signup"
             disabled={(!email || !password || !passwordConfirm) || (password !== passwordConfirm)}
             onClick={signup}
             className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md text-white font-semibold"
