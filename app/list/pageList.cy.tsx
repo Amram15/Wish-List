@@ -32,6 +32,7 @@ describe("Remove Item From List", () => {
 		cy.get(
 			'.MuiDataGrid-row--lastVisible > .actions > .MuiDataGrid-actionsCell > [aria-label="Delete"]'
 		).click();
+		cy.contains("Cabbage").should("not.exist");
 	});
 });
 
@@ -41,7 +42,20 @@ describe("Edit Item In List", () => {
 		cy.viewport(1000, 750);
 		cy.get(
 			".MuiDataGrid-row--lastVisible > .actions > .MuiDataGrid-actionsCell > .textPrimary"
-		);
+		).click();
+		cy.get('[data-field="name"] > .MuiInputBase-root > .MuiInputBase-input')
+			.eq(0)
+			.type("test-list");
+		cy.get('[data-field="notes"] > .MuiInputBase-root > .MuiInputBase-input')
+			.eq(0)
+			.type("test-note");
+		cy.get('[data-field="link"] > .MuiInputBase-root > .MuiInputBase-input')
+			.eq(0)
+			.type("test-link");
+		cy.get(".css-uxfybn-MuiButtonBase-root-MuiIconButton-root").click();
+		cy.contains("test-list");
+		cy.contains("test-note");
+		cy.contains("test-link");
 	});
 });
 
